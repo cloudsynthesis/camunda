@@ -26,3 +26,4 @@ services:
       restart: unless-stopped
 volumes:
   camunda-data:
+     name: camunda-data
