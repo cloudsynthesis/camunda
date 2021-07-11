@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+   mysql:
+      image: mysql:5.7
+      environment:
+          - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+          - MYSQL_USER=${MYSQL_USER}
+          - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+          - MYSQL_DATABASE=${MYSQL_DATABASE}
+      volumes:
+        - camunda-data:/var/lib/mysql
+
+   camunda:
+      image: camunda/camunda-bpm-platform:${DISTRO:-latest}
+      environment:
+          - DB_DRIVER=${DB_DRIVER}
+          - DB_URL=${DB_URL}
+          - DB_USERNAME=${DB_USERNAME}
+          - DB_PASSWORD=${DB_PASSWORD}
+          - WAIT_FOR=${WAIT_FOR}
+      links:
+          - mysql
+      ports:
+          - "8080:8080"
+      restart: unless-stopped
+volumes:
+  camunda-data:
